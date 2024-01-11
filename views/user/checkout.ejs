@@ -1,0 +1,425 @@
+<%- include('../layout/userHeader.ejs') %>
+    <style>
+        /* Example CSS */
+        .btn-edit {
+            color: rgb(14, 63, 187);
+            /* Change this to the color you want for the "Edit address" button */
+        }
+
+        .btn-delete {
+            color: rgb(134, 4, 4);
+            /* Change this to the color you want for the "Delete" button */
+        }
+    </style>
+
+<!-- Add this in your HTML file -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box">
+                        <i class="material-icons">&#xE876;</i>
+                    </div>
+                    <h4 class="modal-title">Awesome!</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Your booking has been confirmed. Check your email for detials.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Check Out</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/">Home</a>
+                            <a href="/shop-products">Shop</a>
+                            <span>Check Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <div class="col-lg-3 mt-4 ">
+        <button class="btn btn-outline-success" data-toggle="modal" data-target="#addaddress">Add Address</button>
+    </div>
+    <div class="modal fade" id="addaddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">New Address</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/addAddress" method="post">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>First Name<span>*</span></p>
+                                    <input type="text" name="firstName">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Last Name<span>*</span></p>
+                                    <input type="text" name="lastName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Phone<span>*</span></p>
+                            <input type="text" name="phone">
+                        </div>
+                        <div class="checkout__input">
+                            <p>email<span>*</span></p>
+                            <input type="text" name="email">
+                        </div>
+                        <div class="checkout__input">
+                            <p>Country<span>*</span></p>
+                            <input type="text" name="country">
+                        </div>
+                        <div class="checkout__input">
+                            <p>Address<span>*</span></p>
+                            <input type="text" placeholder="Street Address" class="checkout__input__add"
+                                name="address1">
+                            <!-- <input type="text" placeholder="Apartment, suite, unite ect (optinal)"> -->
+                        </div>
+
+                        <div class="checkout__input">
+                            <p>address2<span>*</span></p>
+                            <input type="text" name="address2">
+                        </div>
+                        <div class="checkout__input">
+                            <p>Town/City<span>*</span></p>
+                            <input type="text" name="city">
+                        </div>
+                        <div class="checkout__input">
+                            <p>State<span>*</span></p>
+                            <input type="text" name="state">
+                        </div>
+                        <div class="checkout__input">
+                            <p>Postcode / ZIP<span>*</span></p>
+                            <input type="text" name="pincode">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Add Address">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+
+                <form  method="post" action="/place-order" id="checkout__form">
+                    <input type="hidden" name="userId" value="<%= user._id %>">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            <h6 class="checkout__title">Billing Details </h6>
+
+                            <div class="checkout__input">
+                                <p>Name <span>*</span></p>
+                                <input type="text" style="color: black;" placeholder="Name" class="checkout_input_add"
+                                    id="name" name="name" value="<%= user.username %>" readonly>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Email<span>*</span></p>
+                                <input type="text" style="color: black;" placeholder="Email" class="checkout_input_add"
+                                    id="email" name="email" value="<%= user.email %>" readonly>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Mobile<span>*</span></p>
+                                <input type="text" style="color: black;" placeholder="Mobile" class="checkout_input_add"
+                                    id="mobile" name="mobile" value="<%= user.mobile %>" readonly>
+                            </div>
+                            <div class="">
+                                <div class="col-lg-1">
+                                    <p><u>Show Address:</u></p>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <% address.forEach(function(user) { %>
+                                    <% user.deliveryAddress.forEach(function(addr) { %>
+                                        <div class="col-sm-6 address-card">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-text">
+                                                        <%= addr.firstName %>
+                                                            <%= addr.lastName %>
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        <%= addr.city %>,<%= addr.state %>,<%= addr.country %>,<%=
+                                                                        addr.pincode %>
+                                                    </p>
+                                                    <p class="card-text">
+                                                        <%= addr.address1 %>(<%= addr.address2 %>)
+                                                    </p>
+                                                    <input type="radio" name="address" value="<%= addr._id %>" required>
+                                                    <input type="hidden" name="selectedaddress" value="<%= addr._id %>">
+                                                </div>
+                                                <div class="button">
+                                                    <button class="btn btn-edit" data-toggle="modal"
+                                                        data-target="#editAddress<%= addr._id %>">Edit address</button>
+                                                        <a href="/deleteAddress/<%= userId %>/<%= addr._id %>" class="btn btn-delete">Delete</a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                <% }); %>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4>Cart Total</h4>
+                                <div class="cart__total">
+                                    <ul class="">
+                                        <li class="">Shipping<span>Free</span></li>
+                                        <li class="">Coupon<span id="couponDisplay">0</span> </li>
+                                        <li>Total <span>
+                                                <%=totalAmount %>
+                                            </span></li>
+                                    </ul>
+                                </div>
+                                <div class="cart__total">
+                                    <div class="cart__discount ">
+                                        <input type="text" id="couponName" class="form-control"
+                                            placeholder="Enter Coupon Code" aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="site-btn" type="button" id="couponApply">Apply</button>
+                                        </div>
+                                    </div>
+                                    <!-- <p class="px-3 py-1 text-danger" id="couponError"></p>
+                                <a class="px-3 pb-1" style="color: rgb(10, 94, 250); cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#couponListModal">Coupons</a> -->
+                                </div>
+
+                                <div class="checkout_input_checkbox">
+                                    <h4 class="order__title">Payment Method</h4>
+                                    <label for="cashpayment">Cash on Delivery
+                                        <input type="radio" id="cashpayment" name="payment" value=" Cash on Delivery"
+                                            required>
+                                        <!-- <span class="checkmark"></span> -->
+                                    </label>
+                                </div>
+                                <div class="checkout_input_checkbox">
+                                    <label for="netpayment">Net Banking
+                                        <input type="radio" id="netpayment" name="payment" value="Net Banking" required>
+                                        <!-- <span class="checkmark"></span> -->
+                                    </label>
+                                </div>
+                                <div class="checkout_input_checkbox">
+                                    <label for="wallet">Wallet (₹ )
+                                        <input type="radio" id="wallet" name="payment" value="Wallet" required>
+                                        <!-- <span class="checkmark"></span> -->
+                                    </label>
+                                </div>
+                                <!-- <p class="text-danger">{{message}}</p> -->
+                                <div id="status"></div>
+                                <input type="hidden" name="sendTotal" id="sendTotal" value="<%= totalAmount %>">
+                                <input type="submit" class="site-btn place-order-btn" id="confirm" value="PLACE ORDER">
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <% address.forEach(function(user) { %>
+        <% user.deliveryAddress.forEach(function(addr) { %>
+            <div class="modal fade" id="editAddress<%= addr._id %>" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit Address</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/editAddress/<%= addr._id %>" method="post" class="edit-address-form" data-address-id="<%= addr._id %>">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>First Name<span>*</span></p>
+                                            <input type="text" name="firstName" value="<%= addr.firstName %>">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>Last Name<span>*</span></p>
+                                            <input type="text" name="lastName" value="<%= addr.lastName %>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Phone<span>*</span></p>
+                                    <input type="text" name="phone" value="<%= addr.phone %>">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>email<span>*</span></p>
+                                    <input type="text" name="email" value="<%= addr.email %>">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Country<span>*</span></p>
+                                    <input type="text" name="country" value="<%= addr.country %>">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Address<span>*</span></p>
+                                    <input type="text" placeholder="Street Address" class="checkout__input__add"
+                                        name="address1" value="<%= addr.address1 %>">
+                                    <!-- <input type="text" placeholder="Apartment, suite, unite ect (optinal)"> -->
+                                </div>
+
+                                <div class="checkout__input">
+                                    <p>address2<span>*</span></p>
+                                    <input type="text" name="address2" value="<%= addr.address2 %>">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Town/City<span>*</span></p>
+                                    <input type="text" name="city" value="<%= addr.city %>">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>State<span>*</span></p>
+                                    <input type="text" name="state" value="<%= addr.state %>">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Postcode / ZIP<span>*</span></p>
+                                    <input type="text" name="pincode" value="<%= addr.pincode %>">
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary edit-address-submit">Update</button>
+                        </div>
+                    </form>
+
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    <% }); %>
+
+
+
+
+                    <div class="modal fade" id="couponListModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Coupons</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table mt-2" id="productsTable">
+                                        <thead class="text-white" style="background-color: black;">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Discount Amount</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Applicable Amount</th>
+                                                <th scope="col">Expiry Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each couponDetails}}
+                                            <tr class="text-dark">
+                                                <td scope="col">{{inc @index}}</td>
+                                                <td scope="col">{{this.name}}</td>
+                                                <td scope="col">{{this.discount}}</td>
+                                                <td scope="col">{{this.description}}</td>
+                                                <td scope="col">{{this.applicable}}</td>
+                                                <td scope="col">{{formatDate this.dateExpiry 'YYYY-MM-DD'}}</td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="site-btn" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<%- include('../layout/userFooter.ejs') %>
+
+
+<!-- Add this in your HTML file, after including jQuery -->
+<script>
+    $(document).ready(function () {
+        $(".edit-address-form").submit(function (e) {
+            e.preventDefault();
+
+            var form = $(this);
+            var addressId = form.data("address-id");
+
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    // Assuming your server returns a JSON response with a message property
+                    if (response.message === "Address updated successfully") {
+                        // Reload the page or update the address details on the page as needed
+                        location.reload();
+                    } else {
+                        // Handle error, display a message, etc.
+                        console.log("Error updating address");
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX error:", error);
+                }
+            });
+        });
+    });
+
+
+$("#checkout-form").submit((e)=>{
+    e.preventDefault()
+    $.ajax({
+        url:'/place-order',
+        method:'post',
+        data:$('#checkout-form').serialize,
+        success:(response)=>{
+            alert(response)
+        }
+    })
+})
+
+
+
+</script>

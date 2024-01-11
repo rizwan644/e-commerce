@@ -1,0 +1,142 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+<main class="main-wrap">
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Edit Product</h2>
+                <p>Edit the Product Details</p>
+            </div>
+        </div>
+        <section class="content-main">
+            <div class="container mt-5">
+                <form id="updateForm" action="/admin/editProduct" method="post">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter product name" name="name" value="<%= product.name %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description"  placeholder="Enter a description" name="description"><%= product.description %></textarea>
+                    </div>
+                    <div class="row mb-4">
+                        <label class="col-lg-12 col-form-label">Category</label>
+                        <div class="col-lg-12">
+                            <div class="row mb-3">
+                                <label for="selectBox" class="col-sm-2 col-form-label">Categories</label>
+                                <div class="col-sm-10">
+                          
+                                  <select class=" form-control" name="category" id="categorySelect">
+                                    <% categories.forEach((category) => { %>
+                                      <% if (selectedCategory && selectedCategory._id.toString() === category._id.toString()) { %>
+                                        <option value="<%= category._id %>" selected><%= category.name %></option>
+                                        <% } else { %>
+                                          <option value="<%= category._id %>"><%= category.name %></option>
+                                          <% } %>
+                                          <% }); %>
+                                        </select>
+                                      </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Brand</label>
+                        <input type="text" class="form-control" name="brand" value="<%= product.brand %>">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control" name="stock" value="<%= product.stock %>">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="mb-4">
+                            <label class="form-label">Original Price</label>
+                            <input type="text" placeholder="₹00.0" class="form-control" name="originalprice" value="<%= product.originalprice %>">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Pricing</label>
+                        <input type="text" placeholder="₹00.0" class="form-control" name="productprice" value="<%= product.productprice %>">
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Media</h4>
+                            </div>
+                            <div class="input-upload">
+                                <img src="/imgs/theme/upload.svg" id="imgView3" alt="">
+                                <input class="form-control" id="input3" name="images" onchange="viewImage3(event),viewImage(event, 4)" type="file">
+                            </div>
+                            <div class="image-cropper" style="display:none;">
+                                <img src="" id="croppedImg3" alt="">
+                                <button type="button" id="saveButton3" class="btn-sm btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="<%= product._id %>">
+                    <button type="submit" id="submitCategoryButton" class="btn btn-primary">Update Product</button>
+                </form>
+                <span id="error-messages" style="color: red; display: grid; justify-content: center;"></span>
+                <span id="success-messages" style="color: green; display: grid; justify-content: center;"></span>
+            </div>
+        </section>
+    </section>
+</main>
+
+<!-- content-main end// -->
+
+
+
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('updateForm');
+        const submitButton = document.getElementById('submitCategoryButton');
+
+        submitButton.addEventListener('click', async (event) => {
+            event.preventDefault(); // Prevent form submission
+
+            try {
+                const formData = new FormData(form);
+                const id = formData.get('id');
+                const name = formData.get('category');
+                const description = formData.get('description');
+
+                const response = await fetch(`/admin/editCategory/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id, name, description }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('success-messages').textContent = data.message;
+                    setTimeout(function () {
+                        document.getElementById('success-messages').textContent = '';
+                    }, 3000);
+                    // Handle success, maybe redirect or show a success message
+                } else {
+                    document.getElementById('error-messages').textContent = data.message;
+                    setTimeout(function () {
+                        document.getElementById('error-messages').textContent = '';
+                    }, 3000);
+                    // Handle error, maybe display an error message
+                }
+            } catch (error) {
+                console.error('An error occurred', error);
+            }
+        });
+    });
+</script> -->
+
+
+
+
+
+
+
+<%- include('../layout/adminFooter.ejs') %>
+
+

@@ -1,0 +1,258 @@
+<%- include('../layout/userHeader.ejs') %>
+
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shop</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html">Home</a>
+                            <span>Shop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shop Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="shop__sidebar">
+                        <div class="shop__sidebar__search">
+                            <form action="/productsearch" class="w-auto d-flex" style="max-width: 12rem">
+                                <input type="text" class="form-control rounded-0" placeholder="Search" name="search"
+                                    aria-label="Search">
+                                <input type="submit" class="btn btn-dark" value="Search">
+                            </form>
+                        </div>
+                        <div class="shop__sidebar__accordion">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__categories">
+                                                <ul class="nice-scroll">
+                                                    <% categories.forEach(category => { %>
+                                                        <li class="main-nav-list"><a href="/shopProduct?category=<%= category.name %>"><%= category.name %></a></li>
+                                                    <% }); %>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__brand">
+                                                <ul>
+                                                    <li><a href="#">Louis Vuitton</a></li>
+                                                    <li><a href="#">Chanel</a></li>
+                                                    <li><a href="#">Hermes</a></li>
+                                                    <li><a href="#">Gucci</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                                    </div>
+                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__price">
+                                                <ul>
+                                                    <li><a href="#">$0.00 - $50.00</a></li>
+                                                    <li><a href="#">$50.00 - $100.00</a></li>
+                                                    <li><a href="#">$100.00 - $150.00</a></li>
+                                                    <li><a href="#">$150.00 - $200.00</a></li>
+                                                    <li><a href="#">$200.00 - $250.00</a></li>
+                                                    <li><a href="#">250.00+</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="shop__product__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__left">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__right">
+                                    <div class="dropdown my-2 mx-2">
+                                        <button class="btn btn-outline-primary dropdown-toggle"
+                                            style="width: 80px;background-color: transparent; color: #000000;" type="button"
+                                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Sort
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="/sortproducts?sort=asc">Price:Low-High</a>
+                                            <a class="dropdown-item" href="/sortproducts?sort=desc">Price:High-Low</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row"> -->
+                        <!-- <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                                    <ul class="product__hover">
+                                        <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
+                                        <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a>
+                                        </li>
+                                        <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>Piqué Biker Jacket</h6>
+                                    <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <div class="rating">
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <h5>$67.24</h5>
+                                    <div class="product__color__select">
+                                        <label for="pc-4">
+                                            <input type="radio" id="pc-4">
+                                        </label>
+                                        <label class="active black" for="pc-5">
+                                            <input type="radio" id="pc-5">
+                                        </label>
+                                        <label class="grey" for="pc-6">
+                                            <input type="radio" id="pc-6">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                       
+                        
+                       
+                        <div class="row product__filter">
+                            <% product.forEach(element => { %>
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/admin/Upload/<%= element.images[0] %>">
+                                            <span class="label">New</span>
+                                            <ul class="product__hover">
+                                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
+                                                <li><a href="/product-detail?id=<%= element._id %>"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><%= element.name %></h6>
+                                            <a id="addToCart" onclick="addToCart('<%=element._id%>')"  class="add-cart" style="cursor: pointer;">+ Add To Cart</a>
+                                          
+                                            <h5><%= element.productprice %></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div> 
+                    <!-- </div>  -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product__pagination">
+                                <a class="active" href="#">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <span>...</span>
+                                <a href="#">21</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Section End -->
+
+    <!-- Footer Section Begin -->
+    <%- include('../layout/userFooter.ejs') %>
+<script>
+
+    function addToCart(proId){
+        console.log(proId);
+        let cartCount = document.getElementById('cartCount')
+        $.ajax({
+            url:"/addToCart",
+            method:'post',
+            data:{proId},
+            success:(response)=>{
+                if(response.status){
+                        cartCount.innerHTML = response.cartCount
+                        showSuccessModal()
+                    }else{
+                        showErrorModal()
+                        setTimeout(()=>{
+                            location.href = '/sign-up';
+                        },1000) 
+                    }
+            }           
+        })
+    }
+
+
+    function showSuccessModal() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Product added to cart.',
+      timer: 1000, // Set the timer to 2000 milliseconds (2 seconds)
+      showConfirmButton: false, // Hide the "OK" button
+      background: '#f8f9fa', // Set a custom background color
+      iconColor: '#28a745', // Set a custom icon color
+      padding: '2rem', // Increase the padding
+      width: '300px', // Set a custom width
+      customClass: {
+        title: 'my-success-modal-title', // Add a custom CSS class to the title
+        content: 'my-success-modal-content', // Add a custom CSS class to the content
+      },
+      didOpen: () => {
+        // Custom animations or actions when the modal opens
+        // For example, you can use GSAP or CSS animations
+        // Here's an example using GSAP:
+        gsap.from('.swal-icon', { opacity: 0, scale: 0, duration: 0.5 });
+        gsap.from('.my-success-modal-title', { opacity: 0, y: -20, duration: 0.5, delay: 0.2 });
+        gsap.from('.my-success-modal-content', { opacity: 0, y: 20, duration: 0.5, delay: 0.2 });
+      },
+    });
+  }
+
+    function showErrorModal() {
+    Swal.fire({
+      icon: 'error',
+      title: 'Login Required',
+      text: 'Please Login for Add to Cart',
+      showConfirmButton: false,
+    });
+  }
+</script>

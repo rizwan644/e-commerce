@@ -1,0 +1,59 @@
+<%- include('../layout/userHeader.ejs') %>
+
+<section>
+  <br>
+  <h2 class="row justify-content-center">Welcome Back</h2>
+  <div class="container p-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6 my-4">
+        <form action="/login" method="post" class="p-4">
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example1">Email address</label>
+            <input type="email" id="form2Example1" class="form-control" name="email" required />
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example2">Password</label>
+            <input type="password" id="form2Example2" class="form-control" name="password" required />
+          </div>
+
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <p class="text-danger"></p>
+            </div>
+
+            <div class="col">
+              <!-- Simple link -->
+              <a href="/forget-password" class="mt-4">Forgot password? OTP</a>
+              <br>
+              <a href="/otp-varification">Login with OTP</a>
+            </div>
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-dark btn-block mb-4">LOGIN</button>
+
+          <!-- Register buttons -->
+          <div class="text-center">
+            <p>Not a member? <a href="/signup">Signup</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer-basic">
+    <footer>  
+        <div class="text-center">
+          <a href="/"><img src="img/zoOm22.png"  alt="" class="col-lg-2 col-md-2"></a>  
+        </div>  
+        <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+        <p class="text-center copyright">Focus © 2023</p>
+    </footer>
+  </div>
+</section>
+
+<%- include('../layout/userFooter.ejs') %>

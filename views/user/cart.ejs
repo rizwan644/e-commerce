@@ -1,0 +1,233 @@
+<%- include('../layout/userHeader.ejs') %>
+
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shopping Cart</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html">Home</a>
+                            <a href="./shop.html">Shop</a>
+                            <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% cartItems.forEach((products )=> { %>
+                                    <tr>
+                                        <td class="product__cart__item d-flex align-items-center py-4">
+                                            <div class="product__cart__item__pic">
+                                                <img style="width: 70px; height: 70px; object-fit: cover;"
+                                                    src="/admin/Upload/<%= products.product.images[0]  %>" alt="">
+                                            </div>
+                                            <div class="product__cart__item__text">
+                                                <h6>
+                                                    <%= products.product.name %>
+                                                </h6>
+                                                <h5 id="prodPrice<%= products.cartItem  %>">
+                                                    <%= products.product.originalprice %>
+                                                </h5>
+                                            </div>
+                                        </td>
+
+                                        <td class="quantity__item">
+                                            <button class="btn btn-customized me-2"
+                                                id="btn_minus_<%= products.cartItem  %>"
+                                                onclick="changeProductQuantity('<%= products._id%>','<%=products.product._id%>',-1,'<%=products.cartItem%>','<%=products.quantity%>')"
+                                                <%=products.quantity===1 ? 'disabled' : '' %>
+                                                >-</button>
+                                            <span id="cartQuantity<%= products.cartItem  %>">
+                                                <%= products.quantity %>
+                                            </span>
+                                            <button class="btn btn-customized ms-2"
+                                                id="btn_plus_<%= products.cartItem  %>"
+                                                onclick="changeProductQuantity('<%=products._id%>','<%=products.product._id%>',1,'<%=products.cartItem%>','<%=products.quantity%>'+1)">+</button>
+                                            <span class="d-block text-danger mt-2" id="error_"></span>
+                                        </td>
+                                     
+                                        
+                                        <td class="cart__price" id="productPrice<%= products.cartItem  %>">
+                                            <% const originalPrice=parseFloat(products.product.originalprice *
+                                                products.quantity); %>
+                                                <%= originalPrice.toLocaleString(undefined, {style: 'currency' ,
+                                                    currency: 'INR' }) %>
+                                        </td>
+                                        <td class="cart__close"><a href="#" data-toggle="modal"
+                                                data-target="#success_tic"
+                                                onclick="removeProduct('<%=products._id %>','<%=products.cartItem %>')"><i
+                                                    class="fa fa-close"></i></a></td>
+
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+
+                            <!-- <tbody>
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            <img src="img/shopping-cart/cart-1.jpg" alt="">
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h6>T-shirt Contrast Pocket</h6>
+                                            <h5>$98.49</h5>
+                                        </div>
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <div class="pro-qty-2">
+                                                <input type="text" value="1">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">$ 30.00</td>
+                                    <td class="cart__close"><i class="fa fa-close"></i></td>
+                                </tr>   -->
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="/shopProduct">Continue Shopping</a>
+                            </div>
+                        </div>
+                        <!-- <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn update__btn">
+                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <!-- <div class="cart__discount">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Coupon code">
+                            <button type="submit">Apply</button>
+                        </form>
+                    </div> -->
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <!-- <li>Subtotal <span>$ 169.50</span></li> -->
+                            <li>Total <span id="totalPrice">
+                                    <%=totalAmount.toLocaleString(undefined, { style: 'currency' , currency: 'INR' }) %>
+                                </span></li>
+                        </ul>
+                        <a href="/checkout" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+
+    <%- include('../layout/userFooter.ejs') %>
+
+        <script>
+
+
+            function changeProductQuantity(cartId, proId, count, cartItem, quantity) {
+                count = parseInt(count);
+                console.log(quantity);
+
+                // Check if the condition is met, and return without making the AJAX request if true
+                if (count === -1 && quantity === 1) {
+                    return;
+                }
+
+                $.ajax({
+                    url: '/change-product-quantity',
+                    data: { cartId, proId, count, cartItem, quantity },
+                    method: 'post',
+                    success: (response) => {
+                        console.log(response);
+                        if (response.product.limitExceed) {
+                            alert('limit exceed')
+                        } else {
+                            // Update the quantity on the client side
+                            const prodPrice = document.getElementById('prodPrice' + cartItem).innerHTML;
+
+                            document.getElementById('cartQuantity' + cartItem).innerHTML = response.product.quantity;
+                            document.getElementById('productPrice' + cartItem).innerHTML = (response.product.quantity * prodPrice).toLocaleString(undefined, {
+                                style: 'currency',
+                                currency: 'INR'
+                            });
+
+                            document.getElementById('totalPrice').innerHTML = response.totalAmount.toLocaleString(undefined, {
+                                style: 'currency',
+                                currency: 'INR'
+                            });
+                        }
+                        // Disable or enable the "-" button based on the updated quantity
+                        const minusButton = document.getElementById('btn_minus_' + cartItem);
+                        if (response.product.quantity === 1) {
+                            minusButton.disabled = true;
+                        } else {
+                            minusButton.disabled = false;
+                        }
+                    },
+                    error: (error) => {
+                        alert("Error updating quantity");
+                    }
+                });
+            }
+
+
+
+
+            // function changeProductQuantity(cartId, proId, count, cartItem, quantity, button, totalAmount) {
+            //     console.log(cartId, proId, count, cartItem, quantity);
+
+            //     $.ajax({
+            //         url: '/change-product-quantity',
+            //         data: { cartId, proId, count, cartItem, quantity, button,totalAmount },
+            //         method: 'post',
+            //         success: (response) => {
+            //             // Assuming the server sends back the updated quantity in the response
+            //             document.getElementById(`cartQuantity_${proId}`).innerHTML = response.quantityToUpdate;
+            //             document.getElementById(`cartProductAmount_${proId}`).innerHTML = response.productPrice;
+            //         },
+            //         error: (error) => {
+            //             console.error("AJAX Error:", error);
+            //             alert("Error updating quantity");
+            //         }
+            //     });
+            // }
+            function removeProduct(cartId, cartItem) {
+                $.ajax({
+                    url: '/remove-product',
+                    data: { cartId, cartItem },
+                    method: 'post',
+                    success: (response) => {
+                        setTimeout(() => {
+                            location.reload()
+
+                        }, 1000)
+                    }
+                })
+            }
+        </script>

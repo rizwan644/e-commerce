@@ -1,0 +1,217 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+    <main class="main-wrap">
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Product List </h2>
+                    <p>Add, edit or delete a Category</p>
+                </div>
+            
+            </div>
+      
+               
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product List</h5>
+                        <div class="table-responsive">
+                            <table class="table align-middle table-nowrap mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                    <th scope="col" class="text-center">SL No.</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Brand</th>
+                                    <th>Stock</th>
+                                    <th>Orginal Price</th>
+                                    <th>Price</th>
+                                    <th>Edit</th>
+                                    <!-- <th>Delete</th> -->
+                                    <th>List/Unlist</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% product.forEach((item) => { %>
+                                        <tr>
+                                            <td class="text-center">
+                                                <div class="info">
+                                                    <p class="mb-0"><%= item.i %></p>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-start">
+                                                <div class="left">
+                                                    <img src="/admin/Upload/<%= item.images[0] %>"
+                                                        class="img-sm img-thumbnail" alt="Item"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#imageModal<%= item._id %>">
+                                                </div>
+                                            </td>
+                                          
+                                            <td class="text-start">
+                                                <div class="info">
+                                                    <p class="mb-0"><%= item.name %></p>
+                                                </div>
+                                            </td>
+                                              
+                                            <td class="text-start">
+                                                <div class="info">
+                                                    <!-- <p class="mb-0"> -->
+                                                    <p class="mb-0"><%= item.category.name %></p>
+                                                    </p>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-start">
+                                                <div class="info">
+                                                    <p class="mb-0"><%= item.brand %></p>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="text-start">
+                                                <div class="info">
+                                                    <p class="mb-0"><%= item.stock %></p>
+                                                </div>
+                                            </td>
+                                            <td class="text-start">
+                                                <div class="info">
+                                                    <p class="mb-0"><%= item.originalprice %></p>
+                                                </div>
+                                            </td>
+                                            <td class="text-start">
+                                                <div class="info">
+                                                    <p class="mb-0"><%= item.productprice %></p>
+                                                </div>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="/admin/editProduct?id=<%= item._id %>">
+                                                    <i class="bx bx-trash me-1"></i> Edit</a>
+                                            </td>
+                                            <!-- <td class="text-center">
+                                                <a href="/deleteProduct?id=">
+                                                    <i class="fa-sharp fa-solid fa-trash" style="color: #262627;"></i>
+                                                </a>
+                                            </td> -->
+                                            <td  class="text-start">
+                                                    <span class="tooltip-ellipsis" title="<%= item.isListed?'Listed':'Unlisted' %>">
+                                                                                          <%= item.isListed?"Listed":"Unlisted"%></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/vendors/select2.min.js"></script>
+    <script src="assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <script src="assets/js/vendors/chart.js"></script>
+    <!-- Main Script -->
+    <script src="assets/js/main.js" type="text/javascript"></script>
+    <script src="assets/js/custom-chart.js" type="text/javascript"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:57 GMT -->
+</html>
+
+
+
+
+
+</section> <!-- content-main end// -->
+
+
+
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('updateForm');
+        const submitButton = document.getElementById('submitCategoryButton');
+
+        submitButton.addEventListener('click', async (event) => {
+            event.preventDefault(); // Prevent form submission
+
+            try {
+                const formData = new FormData(form);
+                const id = formData.get('id');
+                const name = formData.get('category');
+                const description = formData.get('description');
+
+                const response = await fetch(`/admin/editCategory/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id, name, description }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('success-messages').textContent = data.message;
+                    setTimeout(function () {
+                        document.getElementById('success-messages').textContent = '';
+                    }, 3000);
+                    // Handle success, maybe redirect or show a success message
+                } else {
+                    document.getElementById('error-messages').textContent = data.message;
+                    setTimeout(function () {
+                        document.getElementById('error-messages').textContent = '';
+                    }, 3000);
+                    // Handle error, maybe display an error message
+                }
+            } catch (error) {
+                console.error('An error occurred', error);
+            }
+        });
+    });
+</script> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        $('#thisTable').DataTable({
+            "paging": true,          // Enable pagination
+            "pageLength": 10,        // Number of rows per page
+            "lengthMenu": [10, 25, 50, 75, 100],  // Dropdown options for rows per page
+
+        });
+    });
+</script>
